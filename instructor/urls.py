@@ -7,7 +7,7 @@ from . import views
 ## @brief url patterns for the instructor app.
 urlpatterns = [
     url(r'^$',views.ListGroups.as_view(),name='all'),
-    url(r'^courses/$',views.SingleGroup.as_view(),name='single'),
+    url(r'^courses/(?P<slug>[-\w]+)/$',views.SingleGroup.as_view(),name='single'),
     url(r'^instructor_index/$', views.instructor_index, name='instructor_index'),
     url(r'^(?P<course_id>[0-9]+)/instructor_detail/$', views.instructor_detail, name='instructor_detail'),
     url(r'^(?P<course_id>[0-9]+)/add_assignment/$', views.add_assignment, name='add_assignment'),

@@ -67,12 +67,20 @@ def logout_user(request):
 
 #def homepage(request):
 #    return render(request,'index.html')
+#from django.contrib.auth import get_user_model
+#User = get_user_model()
+class TestPage(TemplateView):
+    template_name = 'test.html'
+
+class ThanksPage(TemplateView):
+    template_name = 'thanks.html'
 
 
 class HomePage(TemplateView):
     template_name = "index.html"
 
     def get(self, request, *args, **kwargs):
+        #logout(request.user)
         if request.user.is_authenticated():
             return HttpResponseRedirect(reverse("test"))
         return super().get(request, *args, **kwargs)

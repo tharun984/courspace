@@ -38,7 +38,8 @@
     						{% else %}
     						      <li><a href="{% url 'instructor:all' %}" class="btn btn-simple">Courses</a></li>
     						      <li><a href="{% url 'users:login_user' %}" class="btn btn-simple">Log in</a></li>
-    						      <li><a href="{% url 'users:register_user' %}" class="btn btn-simple">Sign up</a></li>
+    						      <li><a href="{% url 'users:register_user' %}" class="btn btn-simple">Student Signup</a></li>
+                      <li><a href="{% url 'users:register_instructor' %}" class="btn btn-simple">Instructor Signup</a></li>
     						{% endif %}
     					</ul>
 

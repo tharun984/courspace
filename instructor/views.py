@@ -17,10 +17,25 @@ from django.views import generic
 
 class SingleGroup(generic.DetailView):
     model = Course
+    '''slug_field = Course.code
+
+    #def get_object(self):
+    #    return Course.objects.get(code=self.kwargs.get("code"))
+
+    def get_context_data(self,**kwargs):
+        context = super(SingleGroup, self).get_context_data(**kwargs)
+        context["code"]= Course.code
+        return context'''
+
+
 
 class ListGroups(generic.ListView):
     model = Course
 
+    '''def get_context_data(self,**kwargs):
+        context = super(ListGroups, self).get_context_data(**kwargs)
+        #context[]
+        return context'''
 
 @login_required
 def instructor_index(request):

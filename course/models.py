@@ -14,6 +14,7 @@ class Student(models.Model):
     ## The name of the student
     name = models.CharField(max_length=100)
 
+    email = models.EmailField(max_length=100,blank=False,null=False,default='')
     ## The roll number the student
     roll_no = models.CharField(max_length=100)
 
@@ -57,7 +58,7 @@ class Notification(models.Model):
 
 ## @brief This class represents the resources(lectures/study materials) for a course.
 class Resources(models.Model):
-    ## The resource file 
+    ## The resource file
     file_resource = models.FileField(default='')
 
     ## The title for the resource
@@ -65,5 +66,3 @@ class Resources(models.Model):
 
     ## The course associated with the resource
     course = models.ForeignKey(Course, default=1, on_delete=None)
-
-

@@ -8,6 +8,8 @@ from . import views
 ## @brief url patterns for the website.
 urlpatterns = [
     url(r'^$',views.HomePage.as_view(),name='home_page'),
+    url(r"^test/$", views.TestPage.as_view(), name="test"),
+    url(r"^thanks/$", views.ThanksPage.as_view(), name="thanks"),
     url(r'^admin/', admin.site.urls),
     url(r'^login/$', views.login_user, name='login_user'),
     url(r'^register_user/$', views.register_user, name='register_user'),

@@ -3,7 +3,11 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
+from django.utils.text import slugify
 
+
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 ## @brief This class represents the instructors enrolled in the website.
 class Instructor(models.Model):
@@ -13,8 +17,9 @@ class Instructor(models.Model):
     ## The name of the instructor
     name = models.CharField(max_length=100)
 
+    email = models.EmailField(max_length=100,blank=False,null=False,default='')
     ## The information about the instructor
-    information = models.CharField(max_length=1000,default=1)
+    information = models.TextField(default='',blank=True)
 
     ## @brief This function returns the string representation of the instructor class.
     #
@@ -30,9 +35,9 @@ class Course(models.Model):
     name = models.CharField(max_length=100)
 
     ## The course code
-    code = models.CharField(max_length=100)
-
-    ## The instructor of the course
+    code = models.CharField(max_length=100,default='')
+    slug = models.SlugField(max_length=100,default='')
+    # The instructor of the course
     instructor = models.ForeignKey(Instructor, on_delete=models.CASCADE)
 
     ## The course logo
@@ -40,7 +45,18 @@ class Course(models.Model):
 
     ## @brief This function returns the string representation of the course class.
     #
-    # Used by Django admin website to represent the course objects.
+        # Used by Django admin website to represent the course objects.
+    def get_absolute_url(self):
+        return reverse("instructor:single", kwargs={"slug":self.slug})
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.code)
+        super().save(*args, **kwargs)
+
+
+    class Meta:
+        ordering = ["name"]
+
     def __str__(self):
         return self.name
 
