@@ -1,0 +1,16 @@
+{% extends 'course/basic_page.html' %}
+{% block course_active %}active{% endblock %}
+
+{% block body %}
+
+<style>
+.iframe{
+  align:center
+}
+
+  </style>
+  <p align='center' style="padding-top:7%;" >
+<iframe allowfullscreen="true" frameborder="0" align=center width="800" height="450" src={{link}} >
+</iframe>
+</p>
+{% endblock %}

@@ -94,6 +94,32 @@ def view_resources(request, course_id):
     return render(request,'course/view_resources.html',context)
 
 
+#"https://www.youtube.com/embed/hYifgN5jx2s?autoplay=1"
+#resources = Resources.objects.filter(course=course)
+#"https://www.youtube.com/embed/hYifgN5jx2s?autoplay=1"
+#"https://www.youtube.com/live_chat?v=hYifgN5jx2s&embed_domain=localhost:8080"
+@login_required
+def video_resources(request, course_id):
+    course = Course.objects.get(id=course_id)
+    notifications = Notification.objects.filter(course=course).values_list('content',flat=True)
+    print(notifications)
+    #print('values',notifications.values())
+    flag=0
+    context = {}
+    for item in notifications[::-1]:
+        print('item',item)
+        if ('@link' in item):
+            flag=1
+            li=item.split()
+            context["link"] = li[1]
+            break
+    if flag==0:
+        context["link"] = "#"
+    return render(request,'course/video_resources.html',context)
+
+
+
+
 ## @brief view for the assignment's submission page.
 #
 # This view is called by <assignment_id>/upload_submission url.\n

@@ -50,13 +50,18 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                         <a class="navbar-brand" style="font-family:'Lobster',cursive;font-size:30px;" href="{% url 'course:index' %}">Courspace</a>
+                         <a class="navbar-brand" style="font-family:'Lobster',cursive;font-size:30px;" href="{% url 'course:index' %}">Classroom</a>
 
             </div>
 
             <!-- Items -->
             <div class="collapse navbar-collapse" id="topNavBar">
                 <ul class="nav navbar-nav navbar-right">
+                  <li>
+                      <a href="{% url 'instructor:all' %}">
+                          <span class="glyphicon glyphicon" aria-hidden="true"></span>&nbsp; Courses
+                      </a>
+                  </li>
                     <li>
                         <a href="{% url 'logout_user' %}">
                             <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp; Logout

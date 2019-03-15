@@ -13,4 +13,5 @@ urlpatterns = [
     url(r'^(?P<assignment_id>[0-9]+)/upload_submission/$', views.upload_submission, name='upload_submission'),
     url(r'^(?P<course_id>[0-9]+)/view_assignments/$', views.view_assignments, name='view_assignments'),
     url(r'^(?P<course_id>[0-9]+)/view_resources/$', views.view_resources, name='view_resources'),
+    url(r'^(?P<course_id>[0-9]+)/video_resources/$', views.video_resources, name='video_resources'),
 ]
