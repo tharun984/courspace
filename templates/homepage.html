@@ -17,7 +17,13 @@
 
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
 
-    <!--<link rel="stylesheet" href="{% static 'simplesocial/css/master.css'%}">-->
+    <link rel="stylesheet" href="{% static 'courspace/css/master.css'%}">
+<!--<style>
+  body{
+    background-image: url("");
+  }
+
+</style>-->
 
   </head>
 
@@ -27,7 +33,7 @@
     <nav class="navbar  mynav" role="navigation" id="navbar">
     			<div class="container">
 
-            <a class="navbar-brand mynav" href="{%url 'home_page' %}">Classroom</a>
+            <a style="color:black;font-weight:bold" class="navbar-brand mynav" href="{%url 'home_page' %}">Classroom</a>
 
     					<ul class="nav navbar-nav navbar-right">
     						{% if request.user.is_authenticated %}
@@ -36,10 +42,10 @@
                       <li><a href="#" class="btn btn-simple">Profile</a></li>
                       <li><a href="{% url 'logout_user' %}" class="btn btn-simple">Log out</a></li>
     						{% else %}
-    						      <li><a href="{% url 'instructor:all' %}" class="btn btn-simple">Courses</a></li>
-    						      <li><a href="{% url 'users:login_user' %}" class="btn btn-simple">Log in</a></li>
-    						      <li><a href="{% url 'users:register_user' %}" class="btn btn-simple">Student Signup</a></li>
-                      <li><a href="{% url 'users:register_instructor' %}" class="btn btn-simple">Instructor Signup</a></li>
+    						      <li><a style="color:black;font-weight:bold" href="{% url 'instructor:all' %}" class="btn btn-simple">Courses</a></li>
+    						      <li><a style="color:black;font-weight:bold" href="{% url 'users:login_user' %}" class="btn btn-simple">Log in</a></li>
+    						      <li><a style="color:black;font-weight:bold" href="{% url 'users:register_user' %}" class="btn btn-simple">Student Signup</a></li>
+                      <li><a style="color:black;font-weight:bold" href="{% url 'users:register_instructor' %}" class="btn btn-simple">Instructor Signup</a></li>
     						{% endif %}
     					</ul>
 

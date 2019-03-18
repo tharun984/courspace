@@ -1,0 +1,9 @@
+SVM stands for Support Vector Machine. It is a machine learning approach used for classification and regression analysis.
+It depends on supervised learning models and trained by learning algorithms. They analyze the large amount of data to identify 
+patterns from them. An SVM generates parallel partitions by generating two parallel lines. For each category of data in a
+high-dimensional space and uses almost all attributes. It separates the space in a single pass to generate flat and linear partitions. 
+Divide the 2 categories by a clear gap that should be as wide as possible. Do this partitioning by a plane called hyperplane.
+
+The original SVM algorithm was invented by Vladimir N. Vapnik and Alexey Ya. Chervonenkis in 1963.
+In 1992, Bernhard E. Boser, Isabelle M. Guyon and Vladimir N. Vapnik suggested a way to create nonlinear classifiers by applying the kernel trick to maximum-margin hyperplanes.
+The current standard[according to whom?]incarnation (soft margin) was proposed by Corinna Cortes and Vapnik in 1993 and published in 1995.

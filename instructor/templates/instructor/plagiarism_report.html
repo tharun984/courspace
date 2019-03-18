@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <h1 align='center'>PLAGIARISM REPORT</h1><br><br>
+    {% for results in result_list %}
+      {% for result in results %}
+        <p>{{result}}</p><br><br>
+      {% endfor %}
+    {% endfor %}
+  </body>
+</html>

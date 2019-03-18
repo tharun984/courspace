@@ -1,0 +1,6 @@
+Java Reflection is a process of examining or modifying the run time behavior of a class at run time.
+The java.lang.Class class provides many methods that can be used to get metadata, examine and change the run time behavior of a class.
+The java.lang and java.lang.reflect packages provide classes for java reflection.
+Reflection API allows programmatic access to information about the fields, methods and 
+constructors of loaded classes. It allows use of reflected fields, methods, and constructors 
+to operate on their underlying counterparts, within security restrictions.

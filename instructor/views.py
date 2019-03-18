@@ -8,23 +8,20 @@ from .forms import AssignmentForm, NotificationForm, ResourceForm
 from course.forms import MessageForm
 import datetime
 from django.views import generic
-
+from django.contrib.auth import get_user_model
 
 ## @brief view for the index page of the instructor.
 #
 # This view is called by /instructor_index url.\n
 # It returns the instructor's homepage containing links to all the courses he teaches.
+#us = get_user_model()
 
 class SingleGroup(generic.DetailView):
     model = Course
-    '''slug_field = Course.code
 
-    #def get_object(self):
-    #    return Course.objects.get(code=self.kwargs.get("code"))
-
-    def get_context_data(self,**kwargs):
-        context = super(SingleGroup, self).get_context_data(**kwargs)
-        context["code"]= Course.code
+    '''def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["course_list"] = Student.objects.get(user=us).course_list.all()
         return context'''
 
 
@@ -32,10 +29,15 @@ class SingleGroup(generic.DetailView):
 class ListGroups(generic.ListView):
     model = Course
 
-    '''def get_context_data(self,**kwargs):
-        context = super(ListGroups, self).get_context_data(**kwargs)
-        #context[]
-        return context'''
+@login_required
+def join_course(request, slug):
+    student = Student.objects.get(user=request.user)
+    #student = get_object_or_404(Group,slug=self.kwargs.get("slug"))
+    student.course_list.add(Course.objects.get(slug=slug))
+    print("obtained slug value",slug)
+    print("obtained",student)
+    return render(request, 'course/index.html')
+
 
 @login_required
 def instructor_index(request):
@@ -169,6 +171,117 @@ def view_all_assignments(request, course_id):
     assignments = Assignment.objects.filter(course=course)
     return render(request, 'instructor/view_all_assignments.html', {'assignments' : assignments,'course': course})
 
+from copyleaks.copyleakscloud import CopyleaksCloud
+from copyleaks.processoptions import ProcessOptions
+from copyleaks.product import Product
+import sys
+import time
+
+@login_required
+def plagiarism_check(request,assignment_id):
+    dirPath = './copyleaks'
+    if dirPath not in sys.path:
+        sys.path.insert(0, dirPath)
+
+
+    assignment = Assignment.objects.get(id=assignment_id)
+    submissions_paths = Submission.objects.filter(assignment=assignment).values_list('file_submitted',flat=True)
+    list_of_paths = []
+    #for item in submissions_paths:
+    #    path = r'C:\Users\home\Desktop\Courspace-master\Courspace-master\courspace\media'
+    #    path = path +"\\" + item
+    #    list_of_paths.append(path)
+    #path = path +"\\" +'reflection.txt'
+
+
+    path = r'C:\Users\home\Desktop\Courspace-master\Courspace-master\courspace\media'
+    path = path +"\\" + 'submission1.txt'
+    list_of_paths.append(path)
+    #list_of_paths.append(path)
+    #list_of_paths.append(path)
+
+    print('custompaths ',list_of_paths)
+    """
+    Change to your account credentials.
+    If you don't have an account yet visit https://copyleaks.com/Account/Register
+    Your API-KEY is available at your dashboard on http://api.copyleaks.com of the product that you would like to use.
+    Currently available products: Businesses, Education and Websites.
+    """
+    cloud = CopyleaksCloud(Product.Education, '<EMAIL>', 'API-KEY')
+
+    print("You've got %s Copyleaks %s API credits" % (cloud.getCredits(), cloud.getProduct())) #get credit balance
+
+    options = ProcessOptions()
+    """
+    Add this process option to your process to use sandbox mode.
+    The process will not consume any credits and will return dummy results.
+    For more info about optional headers visit https://api.copyleaks.com/documentation/headers
+    """
+    options.setSandboxMode(True)
+    # Available process options
+#     options.setHttpCallback("http://yoursite.here/callback")
+#     options.setHttpInProgressResultsCallback("http://yoursite.here/callback/results")
+#     options.setEmailCallback("Your@email.com")
+#     options.setCustomFields({'Custom': 'field'})
+#     options.setAllowPartialScan(True)
+#     options.setCompareDocumentsForSimilarity(True)  # Available only on compareByFiles
+#     options.setImportToDatabaseOnly(True)  # Available only on Education API
+
+    print("Submitting a scan request...")
+    """
+    Create a scan process using one of the following methods.
+    Available methods:
+    createByUrl, createByOcr, createByFile, createByText and createByFiles.
+    For more information visit https://api.copyleaks.com/documentation
+    """
+    #process = cloud.createByUrl('https://copyleaks.com', options)
+    # process = cloud.createByOcr('ocr-example.jpg', eOcrLanguage.English, options)
+    #process = cloud.createByFile(path, options)
+    #process = cloud.createByText("Lorem ipsum torquent placerat quisque rutrum tempor lacinia aliquam habitant ligula arcu faucibus gravida, aenean orci lacinia mattis purus consectetur conubia mauris amet nibh consequat turpis dictumst hac ut nullam sodales nunc aenean pharetra, aenean ut sagittis leo massa nisi duis nullam iaculis, nulla ultrices consectetur facilisis curabitur scelerisque quisque primis elit sagittis dictum felis ornare class porta rhoncus lobortis donec praesent curabitur cubilia nec eleifend fringilla fusce vivamus elementum semper nisi conubia dolor, eros habitant nisl suspendisse venenatis interdum nulla interdum, libero urna maecenas potenti nam habitant aliquam donec class sem hendrerit tempus.")
+    processes, errors = cloud.createByFiles(list_of_paths, options)
+
+    print ("Submitted. In progress...")
+
+    for process in processes:
+        iscompleted = False
+        while not iscompleted:
+        # Get process status
+            [iscompleted, percents] = process.isCompleted()
+            print ('%s%s%s%%' % ('#' * int(percents / 2), "-" * (50 - int(percents / 2)), percents))
+            if not iscompleted:
+                time.sleep(2)
+
+    print ("Process Finished!")
+
+    result_list = []
+    # Get the scan results
+    for process in processes:
+        results = process.getResults()
+        result_list.append(results)
+        print ('\nFound %s results...' % (len(results)))
+        for result in results:
+            print('')
+            print('------------------------------------------------')
+            print(result)
+
+    context = {"result_list" : result_list}
+    return render(request, 'instructor/plagiarism_report.html', context)
+        # Optional: Download result full text. Uncomment to activate
+        #print ("Result full-text:")
+        #print("*****************")
+        #print(process.getResultText(result))
+
+        # Optional: Download comparison report. Uncomment to activate
+        #print ("Comparison report:")
+        #print("**************")
+        #print (process.getResultComparison(result))
+
+    # Optional: Download source full text. Uncomment to activate.
+    #print ("Source full-text:")
+    #print("*****************")
+    #print(process.getSourceText())
+    #print("Obtained submissions ",submissions.)
+
 
 ## @brief view for the submissions page of an assignment.
 #
@@ -179,7 +292,9 @@ def view_all_submissions(request,assignment_id):
     assignment = Assignment.objects.get(id=assignment_id)
     submissions = Submission.objects.filter(assignment=assignment)
     course = assignment.course
-    return render(request, 'instructor/view_all_submissions.html', {'submissions' : submissions,'course': course})
+    return render(request, 'instructor/view_all_submissions.html', {'submissions' : submissions,'course': course,'assignment_id' : assignment_id})
+
+
 
 
 ## @brief view for the feedback page containing an histogram of all the feddbacks provided by the students.

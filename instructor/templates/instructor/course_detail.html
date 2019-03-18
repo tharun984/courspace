@@ -8,10 +8,10 @@
   <div class="content">
 
 
-				{% if user in objects.all %}
+				{% if course in course_list  %}
 					<a href="#" class="btn btn-lg btn-fill btn-warning"><span class="glyphicon glyphicon-remove-circle"></span> Leave</a>
 				{% else %}
-					<a href="#" class="btn btn-lg btn-fill btn-warning"><span class="glyphicon glyphicon-ok-circle"></span> Join</a>
+					<a href="{% url 'instructor:join' slug=course.slug %}" class="btn btn-lg btn-fill btn-warning"><span class="glyphicon glyphicon-ok-circle"></span> Join</a>
 				{% endif %}
 
 
